@@ -3,12 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vis Final Project</title>
+    <title>California TopoJSON with D3</title>
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
     <header class="heading">
         <h1>Visual Analytics on Unemployment Trends in California</h1>
     </header>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://d3js.org/topojson.v1.min.js"></script>
+    <script>
+        var jsonData = {{ jsonData | tojson }};
+        var uRateMap = {{ uRateMap | tojson }};
+        var eMap = {{ eMap | tojson }};
+        var avgMap= {{ avgMap | tojson }};
+        var uEMap = {{ uEMap | tojson }};
+    </script>
+    <script src="/static/chloropleth.js" defer></script>
+    <div class="map-container">
+        <h1 class="h1">Chloropleth Map (California Counties)</h1>
+        <div>
+            <label class="h5" for="year-select">Select Year:</label>
+            <select id="year-select">
+                <option value="2008">2008</option>
+                <option value="2009">2009</option>
+                <option value="2010">2010</option>
+                <option value="2011">2011</option>
+                <option value="2012">2012</option>
+                <option value="2013">2013</option>
+                <option value="2014">2014</option>
+                <option value="2015">2015</option>
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+            </select>
+            <div class="age-container">
+                <p class="h3">Select Attribute</p>
+                <input type="radio" id="Employment" name="age" value="Employment">
+                <label class="h4" for="Employment">Employment </label><br>
+                <input type="radio" id="Unemployment" name="age" value="Unemployment">
+                <label class="h4" for="Unemployment">Unemployment</label><br>
+                <input type="radio" id="Unemployment Rate" name="age" value="Unemployment Rate">
+                <label class="h4" for="Unemployment Rate">Unemployment Rate</label>
+                <input type="radio" id="Average Weekly Wages" name="age" value="Average Weekly Wages">
+                <label class="h4" for="Average Weekly Wages">Average Weekly Wages</label>
+            </div>
+        </div>
+        <div id="chloroplethMap"></div>
+    </div>
 </body>
 </html>
