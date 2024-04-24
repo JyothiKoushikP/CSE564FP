@@ -5,12 +5,12 @@ document.addEventListener("DOMContentLoaded", function () {
     var width = 650,
         height = 800;
 
-    var projection = d3.geo.mercator()
+    var projection = d3.geoMercator()
         .scale(1000 * 2)
         .center([-120, 36])
         .translate([width / 2 - 160, height / 2 - 80]);
 
-    var path = d3.geo.path()
+    var path = d3.geoPath()
         .projection(projection);
 
     var svg = d3.select("#chloroplethMap").append("svg")
@@ -23,12 +23,12 @@ document.addEventListener("DOMContentLoaded", function () {
         .attr("d", path);
 
     svg.append("text")
-       .attr("x", 270)
-       .attr("y", 15)
-       .attr("font-family", "Heiti SC")
-       .attr("font-size", "16px")
-       .attr("fill", "black")
-       .text("Legend Scale");
+        .attr("x", 270)
+        .attr("y", 15)
+        .attr("font-family", "Heiti SC")
+        .attr("font-size", "16px")
+        .attr("fill", "black")
+        .text("Legend Scale");
 
     svg.selectAll(".subunit")
         .data(topojson.feature(jsonData, jsonData.objects.subunits).features)
@@ -42,8 +42,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 .duration(200)
                 .style("opacity", .9);
             div.html(d.properties.fullName)
-                .style("left", (d3.event.pageX) + 10 + "px")
-                .style("top", (d3.event.pageY - 30) + "px");
+                .style("left", (d3.pointer(event)[0]) + 10 + "px")
+                .style("top", (d3.pointer(event)[1] - 30) + "px");
         })
         .on("mouseout", function (d) {
             div.transition()
@@ -75,19 +75,19 @@ document.addEventListener("DOMContentLoaded", function () {
         radio.addEventListener("change", function () {
             selectedAttribute = this.value;
             console.log(selectedAttribute);
-            displayLegend()
+            displayLegend();
             switch (selectedAttribute) {
                 case 'Employment':
-                    updateMapColors(eMap[selectedYear])
+                    updateMapColors(eMap[selectedYear]);
                     break;
                 case 'Unemployment':
-                    updateMapColors(uEMap[selectedYear])
+                    updateMapColors(uEMap[selectedYear]);
                     break;
                 case 'Unemployment Rate':
-                    updateMapColors(uRateMap[selectedYear])
+                    updateMapColors(uRateMap[selectedYear]);
                     break;
                 case 'Average Weekly Wages':
-                    updateMapColors(avgMap[selectedYear])
+                    updateMapColors(avgMap[selectedYear]);
                     break;
             }
         });
@@ -124,63 +124,61 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
     }
-            var legendColors = ["DarkRed", "FireBrick", "Crimson", "IndianRed", "LightCoral", "LightSalmon", "LightPink"];
-            var legendWidth = 20;
-            var legendHeight = 20;
-            var legendSpacing = 10;
 
-            var legend = svg.selectAll(".legend")
-                .data(legendColors)
-                .enter().append("g")
-                .attr("class", "legend")
-                .attr("transform", function (d, i) {
-                    var height = legendHeight + legendSpacing;
-                    var offset = height * legendColors.length / 2;
-                    var horz = width - 400;
-                    var vert = i * height + 25;
-                    return "translate(" + horz + "," + vert + ")";
-                });
+    var legendColors = ["DarkRed", "FireBrick", "Crimson", "IndianRed", "LightCoral", "LightSalmon", "LightPink"];
+    var legendWidth = 20;
+    var legendHeight = 20;
+    var legendSpacing = 10;
 
-            legend.append("rect")
-                .attr("width", legendWidth)
-                .attr("height", legendHeight)
-                .style("fill", function (d) {
-                    return d;
-                });
+    var legend = svg.selectAll(".legend")
+        .data(legendColors)
+        .enter().append("g")
+        .attr("class", "legend")
+        .attr("transform", function (d, i) {
+            var height = legendHeight + legendSpacing;
+            var offset = height * legendColors.length / 2;
+            var horz = width - 400;
+            var vert = i * height + 25;
+            return "translate(" + horz + "," + vert + ")";
+        });
 
-        function displayLegend() {
+    legend.append("rect")
+        .attr("width", legendWidth)
+        .attr("height", legendHeight)
+        .style("fill", function (d) {
+            return d;
+        });
 
+    function displayLegend() {
+        legend.selectAll("text").remove();
 
-            legend.selectAll("text").remove();
+        legend.append("text")
+            .attr("x", legendWidth + legendSpacing)
+            .attr("y", legendHeight - legendSpacing)
+            .style("font-family", "Heiti SC")
+            .style("font-size", "12px")
+            .text(function (d, i) {
+                switch (selectedAttribute) {
+                    case 'Employment':
+                        return getLegendText(eMap[selectedYear], i);
+                    case 'Unemployment':
+                        return getLegendText(uEMap[selectedYear], i);
+                    case 'Unemployment Rate':
+                        return getLegendText(uRateMap[selectedYear], i);
+                    case 'Average Weekly Wages':
+                        return getLegendText(avgMap[selectedYear], i);
+                }
+            });
 
-            legend.append("text")
-                .attr("x", legendWidth + legendSpacing)
-                .attr("y", legendHeight - legendSpacing)
-                .style("font-family", "Heiti SC")
-                .style("font-size", "12px")
-                .text(function (d, i) {
-                    switch (selectedAttribute) {
-                        case 'Employment':
-                            return getLegendText(eMap[selectedYear], i);
-                        case 'Unemployment':
-                            return getLegendText(uEMap[selectedYear], i);
-                        case 'Unemployment Rate':
-                            return getLegendText(uRateMap[selectedYear], i);
-                        case 'Average Weekly Wages':
-                            return getLegendText(avgMap[selectedYear], i);
-                    }
-                });
+        function getLegendText(data, i) {
+            delete data["California"];
+            var values = Object.values(data);
+            var minValue = Math.min(...values);
+            var maxValue = Math.max(...values);
+            var base = Math.pow(maxValue / minValue, 1 / (6));
 
-            function getLegendText(data, i) {
-                delete data["California"];
-                var values = Object.values(data);
-                var minValue = Math.min(...values);
-                var maxValue = Math.max(...values);
-                var base = Math.pow(maxValue / minValue, 1 / (6));
-
-                return minValue * Math.pow(base, i);
-            }
+            return minValue * Math.pow(base, i);
         }
-
+    }
 
 });

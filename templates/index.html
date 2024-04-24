@@ -10,7 +10,7 @@
     <header class="heading">
         <h1>Visual Analytics on Unemployment Trends in California</h1>
     </header>
-    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://d3js.org/topojson.v1.min.js"></script>
     <script>
         var jsonData = {{ jsonData | tojson }};
@@ -18,8 +18,25 @@
         var eMap = {{ eMap | tojson }};
         var avgMap= {{ avgMap | tojson }};
         var uEMap = {{ uEMap | tojson }};
+        var lineChartData = [
+            { year: 2008, value: 147 },
+            { year: 2009, value: 167 },
+            { year: 2010, value: 151 },
+            { year: 2011, value: 176 },
+            { year: 2012, value: 194 },
+            { year: 2013, value: 177 },
+            { year: 2014, value: 89 },
+            { year: 2015, value: 888 },
+            { year: 2016, value: 345 },
+            { year: 2017, value: 889 },
+            { year: 2018, value: 990 },
+            { year: 2019, value: 134 },
+            { year: 2020, value: 145 },
+            { year: 2021, value: 189 }
+        ];
     </script>
     <script src="/static/chloropleth.js" defer></script>
+    <script src="/static/lineChart.js"></script>
     <div class="map-container">
         <h1 class="h1">Chloropleth Map (California Counties)</h1>
         <div>
@@ -54,5 +71,13 @@
         </div>
         <div id="chloroplethMap"></div>
     </div>
+    <div class="chart-container">
+        <div id="lineChart"></div>
+    </div>
+    <script>
+        // Call the drawLineChart function with your data
+        drawLineChart();
+    </script>
+
 </body>
 </html>
