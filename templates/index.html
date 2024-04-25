@@ -13,6 +13,9 @@
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://d3js.org/topojson.v1.min.js"></script>
     <script>
+        var selectedCounty = "Alameda County";
+        var selectedAttribute = "Labor Force";
+        var lcData = {{ ldData | tojson }};
         var jsonData = {{ jsonData | tojson }};
         var uRateMap = {{ uRateMap | tojson }};
         var eMap = {{ eMap | tojson }};
@@ -74,6 +77,20 @@
         <div id="chloroplethMap"></div>
     </div>
     <div class="chart-container">
+        <div id = "dropdown-container">
+            <label class="h6" for="county-select">Select County:</label>
+            <select id="county-select">
+                {% for value in dropDownData %}
+                <option value="{{ value }}">{{ value }}</option>
+                {% endfor %}
+            </select>
+             <label class="h7" for="attribute-select">Select Attribute:</label>
+                <select id="attribute-select">
+                    {% for value in attributesData %}
+                    <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                </select>
+        </div>
         <div id="lineChart"></div>
     </div>
 
@@ -88,8 +105,8 @@
       </div>
 
     <script>
-        // Call the drawLineChart function with your data
-        drawLineChart();
+        console.log("function");
+        drawLineChart(selectedCounty,selectedAttribute);
     </script>
 
 </body>

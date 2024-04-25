@@ -23,12 +23,11 @@ def hello_world():
                     'Expenditures Per Capita']
         scaler = RobustScaler()
         data[columns_to_normalize] = scaler.fit_transform(data[columns_to_normalize])
-
-
-
+        dropDownData = getCounties()
+        attributesData = getAttributes()
         data_json = data.to_json(orient='records')
 
-        return render_template('index.html',jsonData = json_data, uRateMap = urateMap, eMap = eMap, uEMap = ueMap, avgMap = avgMap, ldData = lineChartData, data = data_json)
+        return render_template('index.html',jsonData = json_data, uRateMap = urateMap, eMap = eMap, uEMap = ueMap, avgMap = avgMap, ldData = lineChartData, data = data_json,dropDownData = dropDownData,attributesData = attributesData)
 
 def chloropleth_datasets(attribute):
     totalProcessed = {}

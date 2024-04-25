@@ -47,6 +47,24 @@
     font-size: 16px;
 }
 
+.h6 {
+    margin-top: 5px;
+    margin-left: 0px;
+    color: #93351a;
+    font-family: "Heiti SC", monospace;
+    text-align: center;
+    font-size: 16px;
+}
+
+.h7 {
+    margin-top: 5px;
+    margin-left: 100px;
+    color: #93351a;
+    font-family: "Heiti SC", monospace;
+    text-align: center;
+    font-size: 16px;
+}
+
 .map-container {
     border: 1px solid #ccc;
     padding: 20px;
@@ -62,7 +80,7 @@
     margin: 20px auto;
     margin-left: 0px;
     max-width: 800px;
-    height: 600px;
+    height: 700px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 

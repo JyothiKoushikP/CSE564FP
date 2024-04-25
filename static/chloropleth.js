@@ -32,24 +32,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     svg.selectAll(".subunit")
         .data(topojson.feature(jsonData, jsonData.objects.subunits).features)
-        .enter().append("path")
+        .enter()
+        .append("path")
         .attr("class", function (d) {
             return "subunit " + d.properties.name;
         })
         .attr("d", path)
-        .on("mouseover", function (d) { //tooltip
+        .on("mouseover", function (event, d) { // Updated to D3 v6 syntax
+            // Get mouse coordinates
+            const [x, y] = d3.pointer(event);
+
+            // Show tooltip
             div.transition()
                 .duration(200)
                 .style("opacity", .9);
             div.html(d.properties.fullName)
-                .style("left", (d3.pointer(event)[0]) + 10 + "px")
-                .style("top", (d3.pointer(event)[1] - 30) + "px");
+                .style("left", (x + 10) + "px") // Position tooltip 10px to the right of the mouse pointer
+                .style("top", (y + 250) + "px"); // Position tooltip 20px above the mouse pointer
         })
-        .on("mouseout", function (d) {
+        .on("mouseout", function () {
+            // Hide tooltip
             div.transition()
                 .duration(500)
-                .style("opacity", 0.0);
+                .style("opacity", 0);
         });
+
 
     svg.append("path")
         .datum(topojson.mesh(jsonData, jsonData.objects.subunits, function (a, b) {
