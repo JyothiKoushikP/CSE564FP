@@ -18,6 +18,7 @@
         var eMap = {{ eMap | tojson }};
         var avgMap= {{ avgMap | tojson }};
         var uEMap = {{ uEMap | tojson }};
+        var data = {{ data | safe }};
         var lineChartData = [
             { year: 2008, value: 147 },
             { year: 2009, value: 167 },
@@ -37,6 +38,7 @@
     </script>
     <script src="/static/chloropleth.js" defer></script>
     <script src="/static/lineChart.js"></script>
+    <script src="/static/ScatterPlot.js"></script>
     <div class="map-container">
         <h1 class="h1">Chloropleth Map (California Counties)</h1>
         <div>
@@ -74,6 +76,17 @@
     <div class="chart-container">
         <div id="lineChart"></div>
     </div>
+
+    <div class="container">
+        <div class="controls">
+          <label for="x-variable">X Variable:</label>
+          <select id="x-variable"></select>
+          <label for="y-variable">Y Variable:</label>
+          <select id="y-variable"></select>
+        </div>
+        <svg id="scatter-plot-matrix"></svg>
+      </div>
+
     <script>
         // Call the drawLineChart function with your data
         drawLineChart();

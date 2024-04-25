@@ -2,6 +2,7 @@ import pandas as pd
 from flask import Flask, render_template
 import json
 import pandas
+from sklearn.preprocessing import StandardScaler, MinMaxScaler,RobustScaler
 
 app = Flask(__name__)
 
@@ -13,9 +14,21 @@ def hello_world():
         eMap = chloropleth_datasets('Employment')
         ueMap = chloropleth_datasets('Unemployment')
         avgMap = chloropleth_datasets('Average Weekly Wages')
+
         json_data = json.load(f)
-    lineChartData = getAllData()
-    return render_template('index.html',jsonData = json_data, uRateMap = urateMap, eMap = eMap, uEMap = ueMap, avgMap = avgMap, ldData = lineChartData)
+        lineChartData = getAllData()
+        data = pd.read_csv('ca_unemployment.csv')
+        columns_to_normalize  = ['Labor Force', 'Employment', 'Unemployment', 'Average Monthly Employment', 
+                    'Total Wages (All Workers)', 'Establishments', 'Total Expenditures', 'Estimated Population', 
+                    'Expenditures Per Capita']
+        scaler = RobustScaler()
+        data[columns_to_normalize] = scaler.fit_transform(data[columns_to_normalize])
+
+
+
+        data_json = data.to_json(orient='records')
+
+        return render_template('index.html',jsonData = json_data, uRateMap = urateMap, eMap = eMap, uEMap = ueMap, avgMap = avgMap, ldData = lineChartData, data = data_json)
 
 def chloropleth_datasets(attribute):
     totalProcessed = {}
