@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to render scatter plot matrix
     function renderScatterPlotMatrix() {
         // Define dimensions and margins
-        const margin = { top: 50, right: 20, bottom: 50, left: 50 };
+        const margin = { top: 70, right: 20, bottom: 60, left: 100 };
         const width = 600 - margin.left - margin.right;
         const height = 400 - margin.top - margin.bottom;
 
@@ -48,10 +48,13 @@ document.addEventListener("DOMContentLoaded", function () {
         // Add heading
         svg.append('text')
             .attr('x', width / 2)
-            .attr('y', -20)
+            .attr('y', -40)
             .attr('text-anchor', 'middle')
-            .style('font-size', '20px')
-            .text('Scatter Plot Matrix');
+            .style("font-weight", "bold")
+            .style("font-family", "Heiti SC")
+             .style("fill", "rgba(154,9,55,0.79)")
+            .style("font-size", "18px")
+            .text(xVariable + ' vs ' + yVariable);
 
         // Define scales for numerical variables
         const xScale = d3.scaleLinear()
@@ -93,15 +96,21 @@ document.addEventListener("DOMContentLoaded", function () {
         // X Axis label
         svg.append('text')
             .attr('text-anchor', 'middle')
-            .attr('transform', `translate(${width / 2}, ${height + margin.top + 20})`)
-            .style('font-size', '16px')
+            .attr('transform', `translate(${(width / 2) + 20}, ${height + margin.top - 20})`)
+            .style("font-family", "Heiti SC")
+            .style("font-weight", "bold")
+             .style("fill", "rgba(8,73,136,0.79)")
+            .style("font-size", "14px")
             .text(xVariable);
 
         // Y Axis label
         svg.append('text')
             .attr('text-anchor', 'middle')
-            .attr('transform', `translate(${-margin.left + 20}, ${height / 2}) rotate(-90)`)
-            .style('font-size', '16px')
+            .attr('transform', `translate(${-margin.left + 35}, ${height / 2}) rotate(-90)`)
+            .style("font-family", "Heiti SC")
+            .style("font-weight", "bold")
+            .style("fill", "rgba(8,73,136,0.79)")
+            .style("font-size", "14px")
             .text(yVariable);
     }
 });

@@ -8,90 +8,127 @@
 </head>
 <body>
     <header class="heading">
-        <h1>Visual Analytics on Unemployment Trends in California</h1>
+        <h1>VIS Dashboard - Unemployment Trends in California</h1>
     </header>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://d3js.org/topojson.v1.min.js"></script>
     <script>
+        var selectedYear = 2008;
+        var selectedAttribute = "Employment";
         var selectedCounty = "Alameda County";
-        var selectedAttribute = "Labor Force";
         var lcData = {{ ldData | tojson }};
         var jsonData = {{ jsonData | tojson }};
         var uRateMap = {{ uRateMap | tojson }};
+        var lMap = {{ lMap | tojson }};
+        var epMap = {{ epMap | tojson }};
+        var texpMap = {{ texpMap | tojson }};
+        var estMap = {{ estMap | tojson }};
+        var excapMap = {{ excapMap | tojson }};
+        var twMap = {{ twMap | tojson }};
+        var ameMap = {{ ameMap | tojson }};
         var eMap = {{ eMap | tojson }};
         var avgMap= {{ avgMap | tojson }};
+        var dropDownData = {{ dropDownData | tojson }};
         var uEMap = {{ uEMap | tojson }};
         var data = {{ data | safe }};
-        var lineChartData = [
-            { year: 2008, value: 147 },
-            { year: 2009, value: 167 },
-            { year: 2010, value: 151 },
-            { year: 2011, value: 176 },
-            { year: 2012, value: 194 },
-            { year: 2013, value: 177 },
-            { year: 2014, value: 89 },
-            { year: 2015, value: 888 },
-            { year: 2016, value: 345 },
-            { year: 2017, value: 889 },
-            { year: 2018, value: 990 },
-            { year: 2019, value: 134 },
-            { year: 2020, value: 145 },
-            { year: 2021, value: 189 }
-        ];
+        var attributesData = {{ attributesData | tojson }};
+        var heatmapData = {{ heatMap | tojson }};
     </script>
     <script src="/static/chloropleth.js" defer></script>
-    <script src="/static/lineChart.js"></script>
+    <script src="/static/timeSeriesChart.js"></script>
     <script src="/static/ScatterPlot.js"></script>
-    <div class="map-container">
-        <h1 class="h1">Chloropleth Map (California Counties)</h1>
-        <div>
-            <label class="h5" for="year-select">Select Year:</label>
-            <select id="year-select">
-                <option value="2008">2008</option>
-                <option value="2009">2009</option>
-                <option value="2010">2010</option>
-                <option value="2011">2011</option>
-                <option value="2012">2012</option>
-                <option value="2013">2013</option>
-                <option value="2014">2014</option>
-                <option value="2015">2015</option>
-                <option value="2016">2016</option>
-                <option value="2017">2017</option>
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-                <option value="2020">2020</option>
-                <option value="2021">2021</option>
-            </select>
-            <div class="age-container">
-                <p class="h3">Select Attribute</p>
-                <input type="radio" id="Employment" name="age" value="Employment">
-                <label class="h4" for="Employment">Employment </label><br>
-                <input type="radio" id="Unemployment" name="age" value="Unemployment">
-                <label class="h4" for="Unemployment">Unemployment</label><br>
-                <input type="radio" id="Unemployment Rate" name="age" value="Unemployment Rate">
-                <label class="h4" for="Unemployment Rate">Unemployment Rate</label>
-                <input type="radio" id="Average Weekly Wages" name="age" value="Average Weekly Wages">
-                <label class="h4" for="Average Weekly Wages">Average Weekly Wages</label>
-            </div>
-        </div>
-        <div id="chloroplethMap"></div>
+    <script src="/static/heatMap.js"></script>
+
+    <div class="select-container">
+        <label class="cmYear" for="cmYearSelect">Select Year:</label>
+        <select id="cmYearSelect"></select>
+
+        <label class="cmAttribute" for="attribute-select">Select Attribute:</label>
+        <select id="cmAttributeSelect">
+        <option value="Employment">Employment</option>
+        <option value="Unemployment">Unemployment</option>
+        <option value="Unemployment Rate">Unemployment Rate</option>
+        <option value="Average Weekly Wages">Average Weekly Wages</option>
+        <option value="Establishments">Establishments</option>
+        <option value="Labor Force">Labor Force</option>
+        <option value="Expenditures Per Capita">Expenditures Per Capita</option>
+        <option value="Average Monthly Employment">Average Monthly Employment</option>
+        <option value="Total Wages (All Workers)">Total Wages (All Workers)</option>
+        <option value="Estimated Population">Estimated Population</option>
+        <option value="Total Expenditures">Total Expenditures</option>
+        </select>
+
+        <label class="tcdropDown" for="tcCountySelect">Select County:</label>
+        <select id="tcCountySelect">
+            {% for value in dropDownData %}
+            <option value="{{ value }}">{{ value }}</option>
+            {% endfor %}
+        </select>
     </div>
-    <div class="chart-container">
-        <div id = "dropdown-container">
-            <label class="h6" for="county-select">Select County:</label>
-            <select id="county-select">
-                {% for value in dropDownData %}
-                <option value="{{ value }}">{{ value }}</option>
-                {% endfor %}
-            </select>
-             <label class="h7" for="attribute-select">Select Attribute:</label>
-                <select id="attribute-select">
-                    {% for value in attributesData %}
-                    <option value="{{ value }}">{{ value }}</option>
-                    {% endfor %}
-                </select>
+
+    <div class = "maps-container">
+
+        <div class="map-container">
+        <h1 class="h1">Choropleth Map (State of California)</h1>
+
+        <div id="chloroplethMap"></div>
+        <div class="legend">
+          <div class="legend-item" style="background-color: LightPink;">
+              <div class="legend-label" id = "ll1"></div>
+          </div>
+          <div class="legend-item" style="background-color: LightSalmon;">
+              <div class="legend-label" id = "ll2"></div>
+          </div>
+          <div class="legend-item" style="background-color: LightCoral;">
+              <div class="legend-label" id = "ll3"></div>
+          </div>
+          <div class="legend-item" style="background-color: IndianRed;">
+              <div class="legend-label" id = "ll4"></div>
+          </div>
+          <div class="legend-item" style="background-color: Crimson;">
+              <div class="legend-label" id = "ll5"></div>
+          </div>
+          <div class="legend-item" style="background-color: FireBrick;">
+              <div class="legend-label" id = "ll6"></div>
+          </div>
+          <div class="legend-item" style="background-color: DarkRed;">
+              <div class="legend-label" id = "ll7"></div>
+          </div>
         </div>
-        <div id="lineChart"></div>
+    </div>
+
+    <div class="heatmap-container">
+        <h1 class="h1">Correlation Heat Map</h1>
+        <div id="heatMap"></div>
+        <div class="legend">
+        <div class="legend-item" style="background-color: #8B0000;"><div class="legend-label">-1</div></div>
+        <div class="legend-item" style="background-color: #B22222;"><div class="legend-label">-0.9</div></div>
+        <div class="legend-item" style="background-color: #CD5C5C;"><div class="legend-label">-0.8</div></div>
+        <div class="legend-item" style="background-color: #E9967A;"><div class="legend-label">-0.7</div></div>
+        <div class="legend-item" style="background-color: #FA8072;"><div class="legend-label">-0.6</div></div>
+        <div class="legend-item" style="background-color: #FFA07A;"><div class="legend-label">-0.5</div></div>
+        <div class="legend-item" style="background-color: #FF6347;"><div class="legend-label">-0.4</div></div>
+        <div class="legend-item" style="background-color: #FF4500;"><div class="legend-label">-0.3</div></div>
+        <div class="legend-item" style="background-color: #FF0000;"><div class="legend-label">-0.2</div></div>
+        <div class="legend-item" style="background-color: #CD5C5C;"><div class="legend-label">-0.1</div></div>
+        <div class="legend-item" style="background-color: #FFFFFF;"><div class="legend-label">0</div></div>
+        <div class="legend-item" style="background-color: #90EE90;"><div class="legend-label">0.1</div></div>
+        <div class="legend-item" style="background-color: #7FFF00;"><div class="legend-label">0.2</div></div>
+        <div class="legend-item" style="background-color: #ADFF2F;"><div class="legend-label">0.3</div></div>
+        <div class="legend-item" style="background-color: #7CFC00;"><div class="legend-label">0.4</div></div>
+        <div class="legend-item" style="background-color: #90EE90;"><div class="legend-label">0.5</div></div>
+        <div class="legend-item" style="background-color: #98FB98;"><div class="legend-label">0.6</div></div>
+        <div class="legend-item" style="background-color: #32CD32;"><div class="legend-label">0.7</div></div>
+        <div class="legend-item" style="background-color: #228B22;"><div class="legend-label">0.8</div></div>
+        <div class="legend-item" style="background-color: #006400;"><div class="legend-label">0.9</div></div>
+        <div class="legend-item" style="background-color: #006400;"><div class="legend-label">1</div></div>
+    </div>
+    </div>
+    </div>
+
+    <div class="timeSeriesChart">
+        <h1 class="tcHeading" id = "tcHeading">Time Series Chart</h1>
+        <div id="tsChart"></div>
     </div>
 
     <div class="container">
@@ -104,9 +141,10 @@
         <svg id="scatter-plot-matrix"></svg>
       </div>
 
+
     <script>
-        console.log("function");
-        drawLineChart(selectedCounty,selectedAttribute);
+        drawHeatmap(selectedYear);
+        drawTimeSeriesChart(selectedCounty,selectedAttribute);
     </script>
 
 </body>
