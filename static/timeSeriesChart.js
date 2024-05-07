@@ -9,7 +9,6 @@ function drawTimeSeriesChart(county, attribute) {
 
         var data = lcData[county][attribute];
 
-        console.log(data);
 
         var margin = { top: 100, right: 50, bottom: 130, left: 155 },
             width = 800 - margin.left - margin.right,
