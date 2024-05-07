@@ -1,5 +1,14 @@
-var selectedYear = 2008;
-var selectedAttribute = "";
+var didSelectOnce = false;
+
+var yearSelect = document.getElementById("cmYearSelect");
+
+var startYear = 2008;
+var endYear = 2021;
+
+for (var year = startYear; year <= endYear; year++) {
+    var option = new Option(year, year);
+    yearSelect.appendChild(option);
+}
 
 document.addEventListener("DOMContentLoaded", function () {
     var width = 650,
@@ -22,34 +31,81 @@ document.addEventListener("DOMContentLoaded", function () {
         .attr("class", "land")
         .attr("d", path);
 
-    svg.append("text")
-        .attr("x", 270)
-        .attr("y", 15)
-        .attr("font-family", "Heiti SC")
-        .attr("font-size", "16px")
-        .attr("fill", "black")
-        .text("Legend Scale");
-
     svg.selectAll(".subunit")
         .data(topojson.feature(jsonData, jsonData.objects.subunits).features)
-        .enter().append("path")
+        .enter()
+        .append("path")
         .attr("class", function (d) {
             return "subunit " + d.properties.name;
         })
         .attr("d", path)
-        .on("mouseover", function (d) { //tooltip
+        .on("mouseover", function (event, d) { // Updated to D3 v6 syntax
+            // Get mouse coordinates
+            const [x, y] = d3.pointer(event);
+
+            var county = d.properties.name + " County";
+
+            var value;
+
+            switch (selectedAttribute) {
+                case 'Employment':
+                    value = eMap[selectedYear][county];
+                    break;
+                case 'Unemployment':
+                    value = uEMap[selectedYear][county];
+                    break;
+                case 'Unemployment Rate':
+                    value = uRateMap[selectedYear][county];
+                    break;
+                case 'Average Weekly Wages':
+                    value = avgMap[selectedYear][county];
+                    break;
+                case 'Establishments':
+                    value = estMap[selectedYear][county];
+                    break;
+                case 'Labor Force':
+                    value = lMap[selectedYear][county];
+                    break;
+                case 'Expenditures Per Capita':
+                    value = excapMap[selectedYear][county];
+                    break;
+                case 'Average Monthly Employment':
+                    value = ameMap[selectedYear][county];
+                    break;
+                case 'Total Wages (All Workers)':
+                    value = twMap[selectedYear][county];
+                    break;
+                case 'Estimated Population':
+                    value = epMap[selectedYear][county];
+                    break;
+                case 'Total Expenditures':
+                    value = texpMap[selectedYear][county];
+                    break;
+
+            }
+
             div.transition()
                 .duration(200)
                 .style("opacity", .9);
-            div.html(d.properties.fullName)
-                .style("left", (d3.pointer(event)[0]) + 10 + "px")
-                .style("top", (d3.pointer(event)[1] - 30) + "px");
+
+            if(didSelectOnce) {
+                div.html("<div class='county'>" + county + "</div><div>" + selectedAttribute + ": " + value + "</div>")
+                    .style("left", (x + 215) + "px")
+                    .style("top", (y + 245) + "px");
+            } else {
+                div.html("<strong>" + county + "</strong>")
+                .style("left", (x + 215) + "px")
+                .style("top", (y + 245) + "px");
+            }
+
         })
-        .on("mouseout", function (d) {
+        .on("mouseout", function () {
+            // Hide tooltip
             div.transition()
                 .duration(500)
-                .style("opacity", 0.0);
+                .style("opacity", 0);
         });
+
 
     svg.append("path")
         .datum(topojson.mesh(jsonData, jsonData.objects.subunits, function (a, b) {
@@ -64,33 +120,117 @@ document.addEventListener("DOMContentLoaded", function () {
         .style("opacity", 0);
 
     // Event listener for year selection change
-    var yearSelect = document.getElementById('year-select');
+    var yearSelect = document.getElementById('cmYearSelect');
     yearSelect.addEventListener('change', function() {
+        didSelectOnce = true;
         selectedYear = this.value;
-        console.log('Selected Year:', selectedYear);
+        drawHeatmap(selectedYear);
+        switch (selectedAttribute) {
+            case 'Employment':
+                    setLegendText(eMap[selectedYear]);
+                    updateMapColors(eMap[selectedYear]);
+                    break;
+            case 'Unemployment':
+                    setLegendText(uEMap[selectedYear]);
+                    updateMapColors(uEMap[selectedYear]);
+                    break;
+            case 'Unemployment Rate':
+                    setLegendText(uRateMap[selectedYear]);
+                    updateMapColors(uRateMap[selectedYear]);
+                    break;
+            case 'Average Weekly Wages':
+                    setLegendText(avgMap[selectedYear]);
+                    updateMapColors(avgMap[selectedYear]);
+                    break;
+            case 'Establishments':
+                    setLegendText(estMap[selectedYear]);
+                    updateMapColors(estMap[selectedYear]);
+                    break;
+            case 'Labor Force':
+                    setLegendText(lMap[selectedYear]);
+                    updateMapColors(lMap[selectedYear]);
+                    break;
+            case 'Expenditures Per Capita':
+                    setLegendText(excapMap[selectedYear]);
+                    updateMapColors(excapMap[selectedYear]);
+                    break;
+            case 'Average Monthly Employment':
+                    setLegendText(ameMap[selectedYear]);
+                    updateMapColors(ameMap[selectedYear]);
+                    break;
+            case 'Total Wages (All Workers)':
+                    setLegendText(twMap[selectedYear]);
+                    updateMapColors(twMap[selectedYear]);
+                    break;
+            case 'Estimated Population':
+                    setLegendText(epMap[selectedYear]);
+                    updateMapColors(epMap[selectedYear]);
+                    break;
+            case 'Total Expenditures':
+                    setLegendText(texpMap[selectedYear]);
+                    updateMapColors(texpMap[selectedYear]);
+                    break;
+        }
     });
 
-    var radioButtons = document.querySelectorAll('input[type="radio"][name="age"]');
-    radioButtons.forEach(function (radio) {
-        radio.addEventListener("change", function () {
+    var attributeSelect = document.getElementById('cmAttributeSelect');
+        attributeSelect.addEventListener('change', function() {
+            didSelectOnce = true;
             selectedAttribute = this.value;
-            console.log(selectedAttribute);
-            displayLegend();
+            drawTimeSeriesChart(selectedCounty,selectedAttribute);
             switch (selectedAttribute) {
                 case 'Employment':
+                    setLegendText(eMap[selectedYear]);
                     updateMapColors(eMap[selectedYear]);
                     break;
                 case 'Unemployment':
+                    setLegendText(uEMap[selectedYear]);
                     updateMapColors(uEMap[selectedYear]);
                     break;
                 case 'Unemployment Rate':
+                    setLegendText(uRateMap[selectedYear]);
                     updateMapColors(uRateMap[selectedYear]);
                     break;
                 case 'Average Weekly Wages':
+                    setLegendText(avgMap[selectedYear]);
                     updateMapColors(avgMap[selectedYear]);
                     break;
+                case 'Establishments':
+                    setLegendText(estMap[selectedYear]);
+                    updateMapColors(estMap[selectedYear]);
+                    break;
+                case 'Labor Force':
+                    setLegendText(lMap[selectedYear]);
+                    updateMapColors(lMap[selectedYear]);
+                    break;
+                case 'Expenditures Per Capita':
+                    setLegendText(excapMap[selectedYear]);
+                    updateMapColors(excapMap[selectedYear]);
+                    break;
+                case 'Average Monthly Employment':
+                    setLegendText(ameMap[selectedYear]);
+                    updateMapColors(ameMap[selectedYear]);
+                    break;
+                case 'Total Wages (All Workers)':
+                    setLegendText(twMap[selectedYear]);
+                    updateMapColors(twMap[selectedYear]);
+                    break;
+                case 'Estimated Population':
+                    setLegendText(epMap[selectedYear]);
+                    updateMapColors(epMap[selectedYear]);
+                    break;
+                case 'Total Expenditures':
+                    setLegendText(texpMap[selectedYear]);
+                    updateMapColors(texpMap[selectedYear]);
+                    break;
+
             }
-        });
+    });
+
+    var countySelect = document.getElementById('tcCountySelect');
+        countySelect.addEventListener('change', function() {
+            selectedCounty = this.value;
+            drawTimeSeriesChart(selectedCounty,selectedAttribute);
     });
 
     function updateMapColors(data) {
@@ -107,78 +247,42 @@ document.addEventListener("DOMContentLoaded", function () {
                 var county = d.properties.name + " County"; // Modify county name format
                 var value = data[county];
                 var normalizedValue = (value - minValue) / (maxValue - minValue);
+                console.log("Normalized Value");
+                console.log(normalizedValue);
                 if (normalizedValue <= 0.14) {
-                    return "DarkRed";
+                    return "LightPink";
                 } else if (normalizedValue <= 0.28) {
-                    return "FireBrick";
+                    return "LightSalmon";
                 } else if (normalizedValue <= 0.42) {
-                    return "Crimson";
+                    return "LightCoral";
                 } else if (normalizedValue <= 0.56) {
                     return "IndianRed";
                 } else if (normalizedValue <= 0.70) {
-                    return "LightCoral";
+                    return "Crimson";
                 } else if (normalizedValue <= 0.84) {
-                    return "LightSalmon";
+                    return "FireBrick";
                 } else {
-                    return "LightPink";
+                    return "DarkRed";
                 }
             });
-    }
-
-    var legendColors = ["DarkRed", "FireBrick", "Crimson", "IndianRed", "LightCoral", "LightSalmon", "LightPink"];
-    var legendWidth = 20;
-    var legendHeight = 20;
-    var legendSpacing = 10;
-
-    var legend = svg.selectAll(".legend")
-        .data(legendColors)
-        .enter().append("g")
-        .attr("class", "legend")
-        .attr("transform", function (d, i) {
-            var height = legendHeight + legendSpacing;
-            var offset = height * legendColors.length / 2;
-            var horz = width - 400;
-            var vert = i * height + 25;
-            return "translate(" + horz + "," + vert + ")";
-        });
-
-    legend.append("rect")
-        .attr("width", legendWidth)
-        .attr("height", legendHeight)
-        .style("fill", function (d) {
-            return d;
-        });
-
-    function displayLegend() {
-        legend.selectAll("text").remove();
-
-        legend.append("text")
-            .attr("x", legendWidth + legendSpacing)
-            .attr("y", legendHeight - legendSpacing)
-            .style("font-family", "Heiti SC")
-            .style("font-size", "12px")
-            .text(function (d, i) {
-                switch (selectedAttribute) {
-                    case 'Employment':
-                        return getLegendText(eMap[selectedYear], i);
-                    case 'Unemployment':
-                        return getLegendText(uEMap[selectedYear], i);
-                    case 'Unemployment Rate':
-                        return getLegendText(uRateMap[selectedYear], i);
-                    case 'Average Weekly Wages':
-                        return getLegendText(avgMap[selectedYear], i);
-                }
-            });
-
-        function getLegendText(data, i) {
-            delete data["California"];
-            var values = Object.values(data);
-            var minValue = Math.min(...values);
-            var maxValue = Math.max(...values);
-            var base = Math.pow(maxValue / minValue, 1 / (6));
-
-            return minValue * Math.pow(base, i);
-        }
     }
 
 });
+
+function setLegendText(data) {
+    for (var i = 1; i <= 7; i++) {
+        // Get the reference to the element
+        var legendLabelElement = document.getElementById("ll" + (i));
+        // Set the text content
+        legendLabelElement.textContent = parseFloat(getLegendText(data,i)).toFixed(2);
+    }
+}
+
+function getLegendText(data, i) {
+    delete data["California"];
+    var values = Object.values(data);
+    var minValue = Math.min(...values);
+    var maxValue = Math.max(...values);
+    var base = Math.pow(maxValue / minValue, 1 / (6));
+    return minValue * Math.pow(base, i-1);
+}

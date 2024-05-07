@@ -2,11 +2,12 @@ import pandas as pd
 from flask import Flask, render_template
 import json
 import pandas
+import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn.preprocessing import StandardScaler, MinMaxScaler,RobustScaler
 
 app = Flask(__name__)
 
-# load california geojson data
 @app.route('/')
 def hello_world():
     with open('caCountiesTopoSimple.json') as f:
@@ -14,6 +15,14 @@ def hello_world():
         eMap = chloropleth_datasets('Employment')
         ueMap = chloropleth_datasets('Unemployment')
         avgMap = chloropleth_datasets('Average Weekly Wages')
+        estMap = chloropleth_datasets('Establishments')
+        lMap = chloropleth_datasets('Labor Force')
+        excapMap = chloropleth_datasets('Expenditures Per Capita')
+        ameMap = chloropleth_datasets('Average Monthly Employment')
+        twMap = chloropleth_datasets('Total Wages (All Workers)')
+        epMap = chloropleth_datasets('Estimated Population')
+        texpMap = chloropleth_datasets('Total Expenditures')
+        heatMapData = getHMData()
 
         json_data = json.load(f)
         lineChartData = getAllData()
@@ -23,12 +32,10 @@ def hello_world():
                     'Expenditures Per Capita']
         scaler = RobustScaler()
         data[columns_to_normalize] = scaler.fit_transform(data[columns_to_normalize])
-
-
-
+        dropDownData = getCounties()
+        attributesData = getAttributes()
         data_json = data.to_json(orient='records')
-
-        return render_template('index.html',jsonData = json_data, uRateMap = urateMap, eMap = eMap, uEMap = ueMap, avgMap = avgMap, ldData = lineChartData, data = data_json)
+        return render_template('index.html',jsonData = json_data, uRateMap = urateMap, eMap = eMap, uEMap = ueMap, avgMap = avgMap, ldData = lineChartData, data = data_json,dropDownData = dropDownData,attributesData = attributesData, heatMap = heatMapData,estMap = estMap,lMap = lMap,excapMap = excapMap,ameMap = ameMap,twMap = twMap,epMap = epMap,texpMap = texpMap)
 
 def chloropleth_datasets(attribute):
     totalProcessed = {}
@@ -73,7 +80,29 @@ def getAllData():
             for year in years:
                 list.append(float(df[(df['Area Name'] == county) & (df['Year'] == year)][attribute]))
             totalData[county][attribute] = list
+    print(totalData)
     return totalData
+
+def getHMData():
+    df = pd.read_csv('ca_unemployment.csv')
+    years = df['Year'].unique()
+    heatMap = {}
+
+    for year in years:
+        df_filtered = df[df['Year'] == year].select_dtypes(include=['float64', 'int64'])
+        df_filtered = df_filtered.drop(columns=['Year'])
+        correlation_matrix = df_filtered.corr()
+        correlation_list = []
+        for group in correlation_matrix.index:
+            for variable in correlation_matrix.columns:
+                correlation_list.append({
+                    'group': group,
+                    'variable': variable,
+                    'value': correlation_matrix.loc[group, variable]
+                })
+        heatMap[int(year)] = correlation_list
+
+    return heatMap
 
 if __name__ == '__main__':
     app.run()
