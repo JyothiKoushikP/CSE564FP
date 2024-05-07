@@ -1,30 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
    
     // Define variables
-    let xVariable;
-    let yVariable;
+    let xVariable="Year";
+    let yVariable="Establishments";
 
     populateDropdowns();
-
+    renderScatterPlotMatrix()
     // Function to populate dropdowns
     function populateDropdowns() {
         const attributes = Object.keys(data[0]).slice(2); // Exclude first two values
-        const xDropdown = document.getElementById('x-variable');
-        const yDropdown = document.getElementById('y-variable');
-        attributes.forEach(attribute => {
-            const option = document.createElement('option');
-            option.text = attribute;
-            xDropdown.add(option.cloneNode(true));
-            yDropdown.add(option.cloneNode(true)); 
-        });
+            const xDropdown = document.getElementById('cmAttributeSelect');
+        const yDropdown = document.getElementById('y-variable-select');
+
         xDropdown.addEventListener('change', updatePlot);
         yDropdown.addEventListener('change', updatePlot);
     }
 
     function updatePlot() {
         // Get selected variables from dropdowns
-        xVariable = document.getElementById('x-variable').value;
-        yVariable = document.getElementById('y-variable').value;
+        xVariable = document.getElementById('cmAttributeSelect').value;
+        yVariable = document.getElementById('y-variable-select').value;
         // Remove existing plot
         d3.select('#scatter-plot-matrix').selectAll('*').remove();
         // Render scatter plot matrix with selected variables
@@ -34,9 +29,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to render scatter plot matrix
     function renderScatterPlotMatrix() {
         // Define dimensions and margins
-        const margin = { top: 70, right: 20, bottom: 60, left: 100 };
-        const width = 600 - margin.left - margin.right;
-        const height = 400 - margin.top - margin.bottom;
+        const margin = { top: 150, right: 20, bottom: 50, left: 100 };
+        const width = 600  - margin.right;
+        const height = 400  - margin.bottom;
 
         // Create SVG container
         const svg = d3.select('#scatter-plot-matrix')

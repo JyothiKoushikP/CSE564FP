@@ -43,19 +43,37 @@
         <label class="cmYear" for="cmYearSelect">Select Year:</label>
         <select id="cmYearSelect"></select>
 
-        <label class="cmAttribute" for="attribute-select">Select Attribute:</label>
+
+        <label class="cmAttribute" for="attribute-select ">Select Attribute:</label>
         <select id="cmAttributeSelect">
+        <option value="Year">Year</option>
+        <option value="Labour Force">Labour Force</option>
         <option value="Employment">Employment</option>
         <option value="Unemployment">Unemployment</option>
         <option value="Unemployment Rate">Unemployment Rate</option>
         <option value="Average Weekly Wages">Average Weekly Wages</option>
         <option value="Establishments">Establishments</option>
-        <option value="Labor Force">Labor Force</option>
         <option value="Expenditures Per Capita">Expenditures Per Capita</option>
         <option value="Average Monthly Employment">Average Monthly Employment</option>
         <option value="Total Wages (All Workers)">Total Wages (All Workers)</option>
         <option value="Estimated Population">Estimated Population</option>
         <option value="Total Expenditures">Total Expenditures</option>
+        </select>
+
+        <label class="cmAttribute" for="y-variable-select">Select Y Attribute:</label>
+        <select id="y-variable-select">
+            <option value="Year">Year</option>
+            <option value="Labour Force">Labour Force</option>
+            <option value="Employment">Employment</option>
+            <option value="Unemployment">Unemployment</option>
+            <option value="Unemployment Rate">Unemployment Rate</option>
+            <option value="Average Weekly Wages">Average Weekly Wages</option>
+            <option value="Establishments">Establishments</option>
+            <option value="Expenditures Per Capita">Expenditures Per Capita</option>
+            <option value="Average Monthly Employment">Average Monthly Employment</option>
+            <option value="Total Wages (All Workers)">Total Wages (All Workers)</option>
+            <option value="Estimated Population">Estimated Population</option>
+            <option value="Total Expenditures">Total Expenditures</option>
         </select>
 
         <label class="tcdropDown" for="tcCountySelect">Select County:</label>
@@ -126,21 +144,19 @@
     </div>
     </div>
 
-    <div class="timeSeriesChart">
-        <h1 class="tcHeading" id = "tcHeading">Time Series Chart</h1>
-        <div id="tsChart"></div>
-    </div>
-
     <div class="container">
-        <div class="controls">
-          <label for="x-variable">X Variable:</label>
-          <select id="x-variable"></select>
-          <label for="y-variable">Y Variable:</label>
-          <select id="y-variable"></select>
+        <!-- Time Series Chart -->
+        <div class="timeSeriesChart">
+            <h1 class="tcHeading" id="tcHeading">Time Series Chart</h1>
+            <div id="tsChart"></div>
         </div>
-        <svg id="scatter-plot-matrix"></svg>
-      </div>
 
+        <!-- Scatter Plot Matrix -->
+        <div class="scatter-plot-container">
+            <svg id="scatter-plot-matrix"></svg>
+        </div>
+    </div>
+      
 
     <script>
         drawHeatmap(selectedYear);
