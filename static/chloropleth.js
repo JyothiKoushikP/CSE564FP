@@ -15,9 +15,9 @@ document.addEventListener("DOMContentLoaded", function () {
         height = 800;
 
     var projection = d3.geoMercator()
-        .scale(1000 * 2)
+        .scale(1300)
         .center([-120, 36])
-        .translate([width / 2 - 160, height / 2 - 80]);
+        .translate([width / 2 - 180, height / 2 - 200]);
 
     var path = d3.geoPath()
         .projection(projection);
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             var value;
 
-            switch (selectedAttribute) {
+            switch (attributeX) {
                 case 'Employment':
                     value = eMap[selectedYear][county];
                     break;
@@ -89,13 +89,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 .style("opacity", .9);
 
             if(didSelectOnce) {
-                div.html("<div class='county'>" + county + "</div><div>" + selectedAttribute + ": " + value + "</div>")
-                    .style("left", (x + 215) + "px")
-                    .style("top", (y + 245) + "px");
+                div.html("<div class='county'>" + county + "</div><div>" + attributeX + ": " + value + "</div>")
+                    .style("left", (x + 25) + "px")
+                    .style("top", (y + 165) + "px");
             } else {
                 div.html("<strong>" + county + "</strong>")
-                .style("left", (x + 215) + "px")
-                .style("top", (y + 245) + "px");
+                .style("left", (x + 25) + "px")
+                .style("top", (y + 165) + "px");
             }
 
         })
@@ -104,6 +104,10 @@ document.addEventListener("DOMContentLoaded", function () {
             div.transition()
                 .duration(500)
                 .style("opacity", 0);
+        })
+        .on("click", function (event, d) {
+            selectedCounty = d.properties.name + " County";
+            drawTimeSeriesChart(selectedCounty,attributeX);
         });
 
 
@@ -125,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
         didSelectOnce = true;
         selectedYear = this.value;
         drawHeatmap(selectedYear);
-        switch (selectedAttribute) {
+        switch (attributeX) {
             case 'Employment':
                     setLegendText(eMap[selectedYear]);
                     updateMapColors(eMap[selectedYear]);
@@ -173,12 +177,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    var attributeSelect = document.getElementById('cmAttributeSelect');
-        attributeSelect.addEventListener('change', function() {
+    var attributeXSelect = document.getElementById('cmAttributeSelect');
+        attributeXSelect.addEventListener('change', function() {
             didSelectOnce = true;
-            selectedAttribute = this.value;
-            drawTimeSeriesChart(selectedCounty,selectedAttribute);
-            switch (selectedAttribute) {
+            attributeX = this.value;
+            renderScatterPlotMatrix();
+            drawTimeSeriesChart(selectedCounty,attributeX);
+            switch (attributeX) {
                 case 'Employment':
                     setLegendText(eMap[selectedYear]);
                     updateMapColors(eMap[selectedYear]);
@@ -227,10 +232,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
     });
 
-    var countySelect = document.getElementById('tcCountySelect');
-        countySelect.addEventListener('change', function() {
-            selectedCounty = this.value;
-            drawTimeSeriesChart(selectedCounty,selectedAttribute);
+    var attributeYSelect = document.getElementById('y-variable-select');
+    attributeYSelect.addEventListener('change', function() {
+        attributeY = this.value;
+        renderScatterPlotMatrix();
     });
 
     function updateMapColors(data) {

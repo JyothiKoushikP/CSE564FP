@@ -10,8 +10,8 @@ function drawHeatmap(selectedYear) {
     d3.select("#heatMap").html("");
 
     var margin = {top: 30, right: 30, bottom: 30, left: 30},
-        width = 700 - margin.left - margin.right,
-        height = 525 - margin.top - margin.bottom;
+        width = 375 - margin.left - margin.right,
+        height = 300 - margin.top - margin.bottom;
 
     var svg = d3.select("#heatMap")
         .append("svg")

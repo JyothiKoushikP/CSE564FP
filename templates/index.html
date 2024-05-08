@@ -14,7 +14,8 @@
     <script src="https://d3js.org/topojson.v1.min.js"></script>
     <script>
         var selectedYear = 2008;
-        var selectedAttribute = "Employment";
+        var attributeX = "Employment";
+        var attributeY = "Establishments";
         var selectedCounty = "Alameda County";
         var lcData = {{ ldData | tojson }};
         var jsonData = {{ jsonData | tojson }};
@@ -40,15 +41,17 @@
     <script src="/static/heatMap.js"></script>
 
     <div class="select-container">
-        <label class="cmYear" for="cmYearSelect">Select Year:</label>
-        <select id="cmYearSelect"></select>
+{#        <label class="cmYear" for="cmYearSelect">Select Year:</label>#}
+        <select id="cmYearSelect">
+            <option value="" disabled selected>Year</option>
+        </select>
 
 
-        <label class="cmAttribute" for="attribute-select ">Select Attribute:</label>
+{#        <label class="cmAttribute" for="attribute-select ">Select Attribute:</label>#}
         <select id="cmAttributeSelect">
-        <option value="Year">Year</option>
-        <option value="Labour Force">Labour Force</option>
+        <option value="" disabled selected>Select X Attribute</option>
         <option value="Employment">Employment</option>
+        <option value="Labour Force">Labour Force</option>
         <option value="Unemployment">Unemployment</option>
         <option value="Unemployment Rate">Unemployment Rate</option>
         <option value="Average Weekly Wages">Average Weekly Wages</option>
@@ -60,11 +63,12 @@
         <option value="Total Expenditures">Total Expenditures</option>
         </select>
 
-        <label class="cmAttribute" for="y-variable-select">Select Y Attribute:</label>
+{#        <label class="cmAttribute" for="y-variable-select">Select Y Attribute:</label>#}
         <select id="y-variable-select">
-            <option value="Year">Year</option>
-            <option value="Labour Force">Labour Force</option>
+            <option value="" disabled selected>Select Y Attribute</option>
+            <option value="Establishments">Establishments</option>
             <option value="Employment">Employment</option>
+            <option value="Labour Force">Labour Force</option>
             <option value="Unemployment">Unemployment</option>
             <option value="Unemployment Rate">Unemployment Rate</option>
             <option value="Average Weekly Wages">Average Weekly Wages</option>
@@ -76,12 +80,6 @@
             <option value="Total Expenditures">Total Expenditures</option>
         </select>
 
-        <label class="tcdropDown" for="tcCountySelect">Select County:</label>
-        <select id="tcCountySelect">
-            {% for value in dropDownData %}
-            <option value="{{ value }}">{{ value }}</option>
-            {% endfor %}
-        </select>
     </div>
 
     <div class = "maps-container">
@@ -116,30 +114,30 @@
     </div>
 
     <div class="heatmap-container">
-        <h1 class="h1">Correlation Heat Map</h1>
+        <h1 class="h2">Correlation Heat Map</h1>
         <div id="heatMap"></div>
-        <div class="legend">
-        <div class="legend-item" style="background-color: #8B0000;"><div class="legend-label">-1</div></div>
-        <div class="legend-item" style="background-color: #B22222;"><div class="legend-label">-0.9</div></div>
-        <div class="legend-item" style="background-color: #CD5C5C;"><div class="legend-label">-0.8</div></div>
-        <div class="legend-item" style="background-color: #E9967A;"><div class="legend-label">-0.7</div></div>
-        <div class="legend-item" style="background-color: #FA8072;"><div class="legend-label">-0.6</div></div>
-        <div class="legend-item" style="background-color: #FFA07A;"><div class="legend-label">-0.5</div></div>
-        <div class="legend-item" style="background-color: #FF6347;"><div class="legend-label">-0.4</div></div>
-        <div class="legend-item" style="background-color: #FF4500;"><div class="legend-label">-0.3</div></div>
-        <div class="legend-item" style="background-color: #FF0000;"><div class="legend-label">-0.2</div></div>
-        <div class="legend-item" style="background-color: #CD5C5C;"><div class="legend-label">-0.1</div></div>
-        <div class="legend-item" style="background-color: #FFFFFF;"><div class="legend-label">0</div></div>
-        <div class="legend-item" style="background-color: #90EE90;"><div class="legend-label">0.1</div></div>
-        <div class="legend-item" style="background-color: #7FFF00;"><div class="legend-label">0.2</div></div>
-        <div class="legend-item" style="background-color: #ADFF2F;"><div class="legend-label">0.3</div></div>
-        <div class="legend-item" style="background-color: #7CFC00;"><div class="legend-label">0.4</div></div>
-        <div class="legend-item" style="background-color: #90EE90;"><div class="legend-label">0.5</div></div>
-        <div class="legend-item" style="background-color: #98FB98;"><div class="legend-label">0.6</div></div>
-        <div class="legend-item" style="background-color: #32CD32;"><div class="legend-label">0.7</div></div>
-        <div class="legend-item" style="background-color: #228B22;"><div class="legend-label">0.8</div></div>
-        <div class="legend-item" style="background-color: #006400;"><div class="legend-label">0.9</div></div>
-        <div class="legend-item" style="background-color: #006400;"><div class="legend-label">1</div></div>
+        <div class="legendhm">
+        <div class="legend-itemhm" style="background-color: #8B0000;"><div class="legend-labelhm">-1</div></div>
+        <div class="legend-itemhm" style="background-color: #B22222;"><div class="legend-labelhm">-0.9</div></div>
+        <div class="legend-itemhm" style="background-color: #CD5C5C;"><div class="legend-labelhm">-0.8</div></div>
+        <div class="legend-itemhm" style="background-color: #E9967A;"><div class="legend-labelhm">-0.7</div></div>
+        <div class="legend-itemhm" style="background-color: #FA8072;"><div class="legend-labelhm">-0.6</div></div>
+        <div class="legend-itemhm" style="background-color: #FFA07A;"><div class="legend-labelhm">-0.5</div></div>
+        <div class="legend-itemhm" style="background-color: #FF6347;"><div class="legend-labelhm">-0.4</div></div>
+        <div class="legend-itemhm" style="background-color: #FF4500;"><div class="legend-labelhm">-0.3</div></div>
+        <div class="legend-itemhm" style="background-color: #FF0000;"><div class="legend-labelhm">-0.2</div></div>
+        <div class="legend-itemhm" style="background-color: #CD5C5C;"><div class="legend-labelhm">-0.1</div></div>
+        <div class="legend-itemhm" style="background-color: #FFFFFF;"><div class="legend-labelhm">0</div></div>
+        <div class="legend-itemhm" style="background-color: #90EE90;"><div class="legend-labelhm">0.1</div></div>
+        <div class="legend-itemhm" style="background-color: #7FFF00;"><div class="legend-labelhm">0.2</div></div>
+        <div class="legend-itemhm" style="background-color: #ADFF2F;"><div class="legend-labelhm">0.3</div></div>
+        <div class="legend-itemhm" style="background-color: #7CFC00;"><div class="legend-labelhm">0.4</div></div>
+        <div class="legend-itemhm" style="background-color: #90EE90;"><div class="legend-labelhm">0.5</div></div>
+        <div class="legend-item" style="background-color: #98FB98;"><div class="legend-labelhm">0.6</div></div>
+        <div class="legend-itemhm" style="background-color: #32CD32;"><div class="legend-labelhm">0.7</div></div>
+        <div class="legend-itemhm" style="background-color: #228B22;"><div class="legend-labelhm">0.8</div></div>
+        <div class="legend-itemhm" style="background-color: #006400;"><div class="legend-labelhm">0.9</div></div>
+        <div class="legend-itemhm" style="background-color: #006400;"><div class="legend-labelhm">1</div></div>
     </div>
     </div>
     </div>
@@ -153,6 +151,7 @@
 
         <!-- Scatter Plot Matrix -->
         <div class="scatter-plot-container">
+            <h1 class="h3" id="sp">fghdh</h1>
             <svg id="scatter-plot-matrix"></svg>
         </div>
     </div>
@@ -160,7 +159,8 @@
 
     <script>
         drawHeatmap(selectedYear);
-        drawTimeSeriesChart(selectedCounty,selectedAttribute);
+        drawTimeSeriesChart(selectedCounty,attributeX);
+        renderScatterPlotMatrix();
     </script>
 
 </body>
