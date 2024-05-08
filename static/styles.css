@@ -3,24 +3,25 @@
     src: url('kaushan-script/KaushanScript-Regular.otf') format('opentype');
 }
 
-/* Page Title */
+.select-container {
+    margin-top: -13px;
+}
+
 .heading {
     text-align: center;
     background-color: rgb(129, 171, 229);
-    padding: 0.0005em;
     font-family: "Heiti SC", serif;
-    font-size: 18px;
-    border-radius: 10px 10px 10px 10px;
-    font-weight: 300;
+    font-size: 13px;
+    margin-top: -18px;
+    font-weight: 1100;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(0, 0, 0, 0.2); /* Add border line */
+    height: 50px; /* Set the height */
 }
 
-
 /* Choropleth Heading */
-
 .maps-container {
-    display: flex; /* Use flexbox */
+    display: flex;
 }
 
 /* Map Container */
@@ -29,7 +30,9 @@
     padding: 20px;
     margin: 20px auto;
     margin-left: 0px;
-    max-width: 665px;
+    margin-top: 7px;
+    max-width: 350px;
+    height: 355px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     background-color: #f3ecec;
@@ -39,46 +42,47 @@
     color: #790a31;
     font-family: "Heiti SC", monospace;
     text-align: center;
-    font-size: 23px;
-    margin-bottom: 20px;
+    font-size: 14px;
+    margin-top: -8px;
+    margin-bottom: 25px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     letter-spacing: 1px;
-    font-weight: 300;
+    font-weight: 900;
 }
 
 /* Label: Year */
 .cmYear {
     color: #93351a;
     font-family: "Heiti SC", monospace;
-    font-size: 18px;
+    font-size: 14px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     letter-spacing: 1px;
-    font-weight: 300;
+    font-weight: 900;
 }
 
 /* Label: Attribute */
 .cmAttribute {
-    margin-left: 25px;
+    margin-left: 14px;
     color: #93351a;
     font-family: "Heiti SC", monospace;
-    font-size: 18px;
+    font-size: 14px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     letter-spacing: 1px;
-    font-weight: 300;
+    font-weight: 900;
 }
 
 /* Select Bar: Year */
 #cmYearSelect {
     margin-top: 20px;
-    margin-left: 20px;
+    margin-left: 10px;
     font-family: "Heiti SC", sans-serif; /* Set font-family to Heiti SC */
-    font-size: 16px;
+    font-size: 13px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #e8e8b3;
     cursor: pointer;
-    font-weight: 400;
+    font-weight: 900;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     transition: background-color 0.3s ease; /* Add transition for background-color */
 }
@@ -114,13 +118,13 @@
 #cmAttributeSelect {
     margin-left: 10px;
     font-family: "Heiti SC", sans-serif;
-    font-size: 16px;
+    font-size: 13px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #e8e8b3;
     cursor: pointer;
-    font-weight: 400;
+    font-weight: 900;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     transition: background-color 0.3s ease; /* Add transition for background-color */
 }
@@ -154,13 +158,13 @@
 #y-variable-select {
     margin-left: 10px;
     font-family: "Heiti SC", sans-serif;
-    font-size: 16px;
+    font-size: 13px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #e8e8b3;
     cursor: pointer;
-    font-weight: 400;
+    font-weight: 900;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     transition: background-color 0.3s ease; /* Add transition for background-color */
 }
@@ -195,9 +199,9 @@
 /* Choropleth Map */
 #chloroplethMap {
     margin-top: -25px;
-    margin-left: 195px;
-    width: 120%;
-    height: 500px;
+    margin-left: 15px;
+    width: 100%;
+    height: 300px;
 }
 
 /* ChoroPleth - Subunits */
@@ -236,13 +240,13 @@ div.tooltip {
 .legend {
   display: flex;
   justify-content: center;
-  margin-top: -10px;
+  margin-top: 20px;
   margin-bottom: 30px;
 }
 
 .legend-item {
-  width: 85px;
-  height: 7.5px;
+  width: 55px;
+  height: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -252,24 +256,39 @@ div.tooltip {
 
 .legend-label {
   font-family: "Heiti SC", sans-serif;
-  margin-top: 15px;
-  font-size: 12px;
+  margin-top: 12px;
+  font-size: 9px;
   color: #555555 ;
   text-align: center;
-  font-weight: 400;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  font-weight: bolder;
 }
 
 /*********************************************************************************************************************************************************/
 /* HeatMap */
+
+.h2 {
+    color: #790a31;
+    font-family: "Heiti SC", monospace;
+    text-align: center;
+    font-size: 14px;
+    margin-left: 15px;
+    margin-bottom: 20px;
+    margin-top: -10px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+    font-weight: 900;
+}
 
 /* heatmap container */
 .heatmap-container {
     border: 1px dashed #231b1b;
     padding: 20px;
     margin: 20px auto;
-    margin-left: 0px;
-    max-width: 665px;
+    margin-left: -100px;
+    margin-right: 640px;
+    margin-top: 7px;
+    max-width: 350px;
+    height: 355px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     background-color: #f3ecec;
@@ -282,22 +301,63 @@ div.tooltip {
     height: 550px;
 }
 
+/* Legend */
+.legendhm {
+  display: flex;
+  justify-content: center;
+  margin-top: -255px;
+  margin-bottom: 30px;
+}
+
+.legend-itemhm {
+  width: 20px;
+  height: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.25px;
+  border: 1px solid #110d0d;
+}
+
+.legend-labelhm {
+  font-family: "Heiti SC", sans-serif;
+  margin-top: 12px;
+  font-size: 9px;
+  color: #555555 ;
+  text-align: center;
+  font-weight: bolder;
+}
+
 /*********************************************************************************************************************************************************/
 /* Scatter Plot Matrix */
+
+.h3 {
+    color: #790a31;
+    font-family: "Heiti SC", monospace;
+    text-align: center;
+    font-size: 14px;
+    margin-left: 15px;
+    margin-top: -8px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+    font-weight: 900;
+}
 
 .scatter-plot-container{
     border: 1px dashed #231b1b;
     padding: 20px;
     margin: 20px auto;
-    margin-left: 0px;
-    max-width: 686px;
+    margin-left: 20px;
+    margin-top: -460px;
+    max-width: 650px;
+    max-height: 355px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     background-color: #f3ecec;
 }
 #scatter-plot-matrix{
     margin-left: -30px;
-    margin-top: -60px;
+    margin-top: -150px;
     width: 100%;
     height: 639px;
 }
@@ -311,6 +371,7 @@ div.tooltip {
     color: #790a31;
     font-family: "Heiti SC", monospace;
     text-align: center;
+    margin-top: -10px;
     font-size: 18px;
     margin-bottom: 20px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
@@ -322,22 +383,23 @@ div.tooltip {
     border: 1px dashed #231b1b;
     padding: 20px;
     margin: 20px auto;
+    margin-top: -14px;
     margin-left: 0px;
     max-width: 750px;
-    height: 700px;
+    height: 280px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     background-color: #f3ecec;
 }
 
 .tcdropDown {
-    margin-left: 30px;
+    margin-left: 15px;
     color: #93351a;
     font-family: "Heiti SC", monospace;
-    font-size: 18px;
+    font-size: 13px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     letter-spacing: 1px;
-    font-weight: 300;
+    font-weight: 900;
 }
 
 #tsChart {
@@ -352,13 +414,13 @@ div.tooltip {
     margin-top: 20px;
     margin-left: 20px;
     font-family: "Heiti SC", sans-serif;
-    font-size: 16px;
+    font-size: 13px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #e8e8b3;
     cursor: pointer;
-    font-weight: 400;
+    font-weight: 900;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     transition: background-color 0.3s ease;
 }
@@ -391,23 +453,6 @@ div.tooltip {
 }
 
 /*********************************************************************************************************************************************************/
-
-.h2 {
-    color: #27590c;
-    font-family: "Heiti SC", monospace;
-    text-align: center;
-    font-size: 14px;
-    margin-bottom: 20px;
-}
-
-.h3 {
-    color: #93351a;
-    font-family: "Heiti SC", monospace;
-    text-align: center;
-    font-size: 16px;
-    margin-left: -30px;
-    margin-bottom: 20px;
-}
 
 .h4 {
     color: #27590c;

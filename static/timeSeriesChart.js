@@ -1,7 +1,7 @@
 function drawTimeSeriesChart(county, attribute) {
         d3.select("#tsChart").html("");
 
-        document.getElementById("tcHeading").innerText = "Time Series Chart (" + selectedCounty + " vs " + selectedAttribute + ")";
+        document.getElementById("tcHeading").innerText = "Time Series Chart (" + selectedCounty + " vs " + attributeX + ")";
 
         var tooltip = d3.select("#tsChart").append("div")
             .attr("class", "tooltip")
@@ -10,9 +10,9 @@ function drawTimeSeriesChart(county, attribute) {
         var data = lcData[county][attribute];
 
 
-        var margin = { top: 100, right: 50, bottom: 130, left: 155 },
+        var margin = { top: 60, right: 50, bottom: 150, left: 155 },
             width = 800 - margin.left - margin.right,
-            height = 700 - margin.top - margin.bottom;
+            height = 400 - margin.top - margin.bottom;
 
         var x = d3.scaleLinear()
             .range([0, width])
@@ -51,7 +51,7 @@ function drawTimeSeriesChart(county, attribute) {
 
         svg.append("text")
             .attr("x", width / 2)
-            .attr("y", height + margin.bottom / 2)
+            .attr("y", height + margin.bottom / 2 - 17)
             .attr("text-anchor", "middle")
             .style("font-size", "14px")
             .style("font-weight", "bold")
@@ -108,7 +108,8 @@ function drawTimeSeriesChart(county, attribute) {
             .style("pointer-events", "all")
             .style("opacity", 0)
             .transition().duration(1500) // Animation duration
-            .style("opacity", 1);
+            .style("opacity", 1)
+
 
         svg.selectAll("circle")
             .on("mouseover", function(d, i) {
@@ -120,7 +121,7 @@ function drawTimeSeriesChart(county, attribute) {
                     .style("opacity", .9);
                 tooltip.html(tooltipText)
                     .style("left", (x + 80) + "px")
-                    .style("top", (y + 1050) + "px");
+                    .style("top", (y + 570) + "px");
             })
             .on("mouseout", function() {
                 tooltip.transition()

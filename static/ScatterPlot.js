@@ -1,37 +1,9 @@
-document.addEventListener("DOMContentLoaded", function () {
-   
-    // Define variables
-    let xVariable="Year";
-    let yVariable="Establishments";
-
-    populateDropdowns();
-    renderScatterPlotMatrix()
-    // Function to populate dropdowns
-    function populateDropdowns() {
-        const attributes = Object.keys(data[0]).slice(2); // Exclude first two values
-            const xDropdown = document.getElementById('cmAttributeSelect');
-        const yDropdown = document.getElementById('y-variable-select');
-
-        xDropdown.addEventListener('change', updatePlot);
-        yDropdown.addEventListener('change', updatePlot);
-    }
-
-    function updatePlot() {
-        // Get selected variables from dropdowns
-        xVariable = document.getElementById('cmAttributeSelect').value;
-        yVariable = document.getElementById('y-variable-select').value;
-        // Remove existing plot
-        d3.select('#scatter-plot-matrix').selectAll('*').remove();
-        // Render scatter plot matrix with selected variables
-        renderScatterPlotMatrix();
-    }
-
-    // Function to render scatter plot matrix
-    function renderScatterPlotMatrix() {
+function renderScatterPlotMatrix() {
+        d3.select("#scatter-plot-matrix").html("");
         // Define dimensions and margins
-        const margin = { top: 150, right: 20, bottom: 50, left: 100 };
-        const width = 600  - margin.right;
-        const height = 400  - margin.bottom;
+        const margin = { top: 150, right: 160, bottom: 80, left: 100 };
+        const width = 625  - margin.right;
+        const height = 390  - margin.bottom;
 
         // Create SVG container
         const svg = d3.select('#scatter-plot-matrix')
@@ -40,24 +12,13 @@ document.addEventListener("DOMContentLoaded", function () {
             .append('g')
             .attr('transform', `translate(${margin.left},${margin.top})`);
 
-        // Add heading
-        svg.append('text')
-            .attr('x', width / 2)
-            .attr('y', -40)
-            .attr('text-anchor', 'middle')
-            .style("font-weight", "bold")
-            .style("font-family", "Heiti SC")
-             .style("fill", "rgba(154,9,55,0.79)")
-            .style("font-size", "18px")
-            .text(xVariable + ' vs ' + yVariable);
-
         // Define scales for numerical variables
         const xScale = d3.scaleLinear()
-            .domain([d3.min(data, d => d[xVariable]), d3.max(data, d => d[xVariable])])
+            .domain([d3.min(data, d => d[attributeX]), d3.max(data, d => d[attributeX])])
             .range([0, width]);
 
         const yScale = d3.scaleLinear()
-            .domain([d3.min(data, d => d[yVariable]), d3.max(data, d => d[yVariable])])
+            .domain([d3.min(data, d => d[attributeY]), d3.max(data, d => d[attributeY])])
             .range([height, 0]);
 
         // Define color scale for circles
@@ -75,8 +36,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .transition() // Add transition for animation
             .delay((d, i) => i * 5) // Delay each circle animation
             .duration(500) // Duration of animation
-            .attr('cx', d => xScale(d[xVariable])) // Move to final x position
-            .attr('cy', d => yScale(d[yVariable])) // Move to final y position
+            .attr('cx', d => xScale(d[attributeX])) // Move to final x position
+            .attr('cy', d => yScale(d[attributeY])) // Move to final y position
             .attr('r', 4); // Increase radius to final value
 
         // Render x-axis for numerical variables
@@ -91,12 +52,12 @@ document.addEventListener("DOMContentLoaded", function () {
         // X Axis label
         svg.append('text')
             .attr('text-anchor', 'middle')
-            .attr('transform', `translate(${(width / 2) + 20}, ${height + margin.top - 20})`)
+            .attr('transform', `translate(${(width / 2) + 20}, ${height + margin.top - 112})`)
             .style("font-family", "Heiti SC")
             .style("font-weight", "bold")
              .style("fill", "rgba(8,73,136,0.79)")
             .style("font-size", "14px")
-            .text(xVariable);
+            .text(attributeX);
 
         // Y Axis label
         svg.append('text')
@@ -106,6 +67,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .style("font-weight", "bold")
             .style("fill", "rgba(8,73,136,0.79)")
             .style("font-size", "14px")
-            .text(yVariable);
-    }
-});
+            .text(attributeY);
+
+        document.getElementById("sp").innerText = "Scatter plot (" + attributeX + " vs " + attributeY + ")";
+
+}
