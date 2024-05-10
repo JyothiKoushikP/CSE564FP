@@ -7,21 +7,39 @@
     margin-top: -13px;
 }
 
+body {
+  background-color: #539bd9;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
 .heading {
     text-align: center;
-    background-color: rgb(129, 171, 229);
+    background-color: rgb(224, 136, 136);
     font-family: "Heiti SC", serif;
     font-size: 13px;
-    margin-top: -18px;
+    margin-top: -14px;
     font-weight: 1100;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(0, 0, 0, 0.2); /* Add border line */
-    height: 50px; /* Set the height */
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    height: 50px;
 }
 
 /* Choropleth Heading */
 .maps-container {
     display: flex;
+}
+
+.map-container1{
+    border: 1px dashed #231b1b;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f3ecec;
+    width: 616px;
+    height: 392px;
+    margin-left: 804px;
+    margin-top: -536px;
+    border-radius: 8px
 }
 
 /* Map Container */
@@ -62,13 +80,18 @@
 
 /* Label: Attribute */
 .cmAttribute {
-    margin-left: 14px;
+    margin-left: 10px;
     color: #93351a;
     font-family: "Heiti SC", monospace;
     font-size: 14px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     letter-spacing: 1px;
     font-weight: 900;
+}
+
+.select-container {
+    display: flex;
+    align-items: center;
 }
 
 /* Select Bar: Year */
@@ -94,7 +117,10 @@
     right: 10px;
     transform: translateY(-50%);
 }
-
+.select-container {
+    display: flex;
+    align-items: center;
+}
 #cmYearSelect option {
     background-color: #fff;
     color: #333;
@@ -116,7 +142,8 @@
 
 /* Select Bar: Attribute */
 #cmAttributeSelect {
-    margin-left: 10px;
+    margin-left: 90px;
+    margin-top: 18px;
     font-family: "Heiti SC", sans-serif;
     font-size: 13px;
     padding: 10px;
@@ -156,7 +183,8 @@
     box-shadow: 0 0 5px rgba(81, 203, 238, 0.5);
 }
 #y-variable-select {
-    margin-left: 10px;
+    margin-left: 7px;
+    margin-top: 18px;
     font-family: "Heiti SC", sans-serif;
     font-size: 13px;
     padding: 10px;
@@ -194,6 +222,61 @@
     outline: none;
     border-color: #4CAF50;
     box-shadow: 0 0 5px rgba(81, 203, 238, 0.5);
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    width: 250px; /* Adjust width as needed */
+}
+
+/* Styling for the range input */
+input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none; /* Remove default styling */
+    appearance: none;
+    height: 10px; /* Set height of the track */
+    border-radius: 5px; /* Round the corners */
+    background: #d3d3d3; /* Set background color of the track */
+    outline: none; /* Remove default focus styling */
+    margin: 0 10px; /* Adjust margin as needed */
+}
+
+/* Styling for the slider thumb */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Remove default styling */
+    appearance: none;
+    width: 20px; /* Set width of the thumb */
+    height: 20px; /* Set height of the thumb */
+    border-radius: 50%; /* Make it round */
+    background: #4caf50; /* Set background color of the thumb */
+    cursor: pointer; /* Show pointer cursor */
+}
+
+label {
+    color: #790a31;
+    font-family: "Heiti SC", monospace;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 40px;
+    margin-left: 5px;
+    margin-bottom: 25px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+    font-weight: 900;
+}
+
+span {
+    color: #790a31;
+    font-family: "Heiti SC", monospace;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 40px;
+    margin-left: 5px;
+    margin-bottom: 25px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+    font-weight: 900;
 }
 
 /* Choropleth Map */
@@ -285,7 +368,7 @@ div.tooltip {
     padding: 20px;
     margin: 20px auto;
     margin-left: -100px;
-    margin-right: 640px;
+    margin-right: 658px;
     margin-top: 7px;
     max-width: 350px;
     height: 355px;
@@ -348,9 +431,9 @@ div.tooltip {
     padding: 20px;
     margin: 20px auto;
     margin-left: 20px;
-    margin-top: -460px;
-    max-width: 650px;
-    max-height: 355px;
+    margin-top: -482px;
+    max-width: 578px;
+    max-height: 383px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     background-color: #f3ecec;
@@ -385,8 +468,8 @@ div.tooltip {
     margin: 20px auto;
     margin-top: -14px;
     margin-left: 0px;
-    max-width: 750px;
-    height: 280px;
+    max-width: 757px;
+    height: 316px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     background-color: #f3ecec;

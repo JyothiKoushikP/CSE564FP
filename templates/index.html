@@ -41,17 +41,16 @@
     <script src="/static/heatMap.js"></script>
 
     <div class="select-container">
-{#        <label class="cmYear" for="cmYearSelect">Select Year:</label>#}
-        <select id="cmYearSelect">
-            <option value="" disabled selected>Year</option>
-        </select>
-
+        <div class="slider-container">
+            <label for="cmYearSelect">Year</label>
+            <input type="range" id="cmYearSelect" name="cmYearSelect" min="2008" max="2021" value="2008">
+            <span id="slider-value">2008</span>
+        </div>
 
 {#        <label class="cmAttribute" for="attribute-select ">Select Attribute:</label>#}
         <select id="cmAttributeSelect">
         <option value="" disabled selected>Select X Attribute</option>
         <option value="Employment">Employment</option>
-        <option value="Labour Force">Labour Force</option>
         <option value="Unemployment">Unemployment</option>
         <option value="Unemployment Rate">Unemployment Rate</option>
         <option value="Average Weekly Wages">Average Weekly Wages</option>
@@ -66,9 +65,7 @@
 {#        <label class="cmAttribute" for="y-variable-select">Select Y Attribute:</label>#}
         <select id="y-variable-select">
             <option value="" disabled selected>Select Y Attribute</option>
-            <option value="Establishments">Establishments</option>
             <option value="Employment">Employment</option>
-            <option value="Labour Force">Labour Force</option>
             <option value="Unemployment">Unemployment</option>
             <option value="Unemployment Rate">Unemployment Rate</option>
             <option value="Average Weekly Wages">Average Weekly Wages</option>
@@ -133,7 +130,7 @@
         <div class="legend-itemhm" style="background-color: #ADFF2F;"><div class="legend-labelhm">0.3</div></div>
         <div class="legend-itemhm" style="background-color: #7CFC00;"><div class="legend-labelhm">0.4</div></div>
         <div class="legend-itemhm" style="background-color: #90EE90;"><div class="legend-labelhm">0.5</div></div>
-        <div class="legend-item" style="background-color: #98FB98;"><div class="legend-labelhm">0.6</div></div>
+        <div class="legend-itemhm" style="background-color: #98FB98;"><div class="legend-labelhm">0.6</div></div>
         <div class="legend-itemhm" style="background-color: #32CD32;"><div class="legend-labelhm">0.7</div></div>
         <div class="legend-itemhm" style="background-color: #228B22;"><div class="legend-labelhm">0.8</div></div>
         <div class="legend-itemhm" style="background-color: #006400;"><div class="legend-labelhm">0.9</div></div>
@@ -147,6 +144,10 @@
         <div class="timeSeriesChart">
             <h1 class="tcHeading" id="tcHeading">Time Series Chart</h1>
             <div id="tsChart"></div>
+
+            <div class="map-container1">
+                <div id="radial-plot"></div>
+            </div>
         </div>
 
         <!-- Scatter Plot Matrix -->
@@ -162,7 +163,7 @@
         drawTimeSeriesChart(selectedCounty,attributeX);
         renderScatterPlotMatrix();
     </script>
-    <div id="radial-plot"></div>
+
   <script src="../static/radialPlot.js"></script>
 
 </body>

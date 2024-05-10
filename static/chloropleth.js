@@ -42,7 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
         .on("mouseover", function (event, d) { // Updated to D3 v6 syntax
             // Get mouse coordinates
             const [x, y] = d3.pointer(event);
-
             var county = d.properties.name + " County";
 
             var value;
@@ -91,11 +90,11 @@ document.addEventListener("DOMContentLoaded", function () {
             if(didSelectOnce) {
                 div.html("<div class='county'>" + county + "</div><div>" + attributeX + ": " + value + "</div>")
                     .style("left", (x + 25) + "px")
-                    .style("top", (y + 165) + "px");
+                    .style("top", (y + 145) + "px");
             } else {
                 div.html("<strong>" + county + "</strong>")
                 .style("left", (x + 25) + "px")
-                .style("top", (y + 165) + "px");
+                .style("top", (y + 145) + "px");
             }
 
         })
@@ -124,10 +123,14 @@ document.addEventListener("DOMContentLoaded", function () {
         .style("opacity", 0);
 
     // Event listener for year selection change
-    var yearSelect = document.getElementById('cmYearSelect');
-    yearSelect.addEventListener('change', function() {
+
+    const slider = document.getElementById('cmYearSelect');
+    const sliderValueElement = document.getElementById('slider-value');
+
+    slider.addEventListener('change', function() {
         didSelectOnce = true;
         selectedYear = this.value;
+        sliderValueElement.textContent = selectedYear;
         drawHeatmap(selectedYear);
         switch (attributeX) {
             case 'Employment':
